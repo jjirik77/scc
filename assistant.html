@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Are AI Assistants & Knowledge Systems?</title>
+  <style>
+    /* CSS Variables & Variables Configuration */
+    :root {
+      --primary-slate: #0f172a; /* Slate 900 */
+      --primary-hover: #1e293b; /* Slate 800 */
+      --primary-light: #f1f5f9; /* Slate 100 */
+      --accent-teal: #0d9488; /* Teal 600 */
+      --accent-hover: #0f766e; /* Teal 700 */
+      --accent-light: #ccfbf1; /* Teal 100 */
+      --accent-border: #99f6e4; /* Teal 200 */
+      
+      --bg-color: #f8fafc; /* Slate 50 */
+      --card-bg: #ffffff;
+      --text-main: #334155; /* Slate 700 */
+      --text-dark: #0f172a; /* Slate 900 */
+      --text-light: #64748b; /* Slate 500 */
+      
+      --border-color: #cbd5e1; /* Slate 300 */
+      --border-focus: #0f766e;
+      --error-color: #e11d48; /* Rose 600 */
+      --error-light: #ffe4e6; /* Rose 100 */
+      --success-color: #16a34a; /* Green 600 */
+      --success-light: #dcfce7; /* Green 100 */
+      
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      
+      --max-width: 840px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      --transition-normal: 0.2s ease-in-out;
+      --transition-slow: 0.35s ease-in-out;
+      
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Core Layout Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: var(--spacing-xl);
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--accent-teal);
+      color: #ffffff;
+      padding: var(--spacing-sm) var(--spacing-md);
+      z-index: 1000;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transition: top var(--transition-normal);
+    }
+
+    .skip-link:focus {
+      top: 0;
+      outline: 2px solid var(--primary-slate);
+    }
+
+    /* App Shell Elements */
+    .app-header {
+      background-color: var(--primary-slate);
+      color: #ffffff;
+      padding: var(--spacing-lg) var(--spacing-md);
+      border-bottom: 4px solid var(--accent-teal);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .app-header .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-header h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: #ffffff;
+    }
+
+    .app-header p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      font-weight: 400;
+    }
+
+    .app-main {
+      max-width: var(--max-width);
+      margin: var(--spacing-lg) auto 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* Progress Indicator */
+    .progress-container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .progress-bar-bg {
+      background-color: var(--primary-light);
+      border-radius: 10px;
+      height: 8px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background-color: var(--accent-teal);
+      height: 100%;
+      width: 12.5%;
+      border-radius: 10px;
+      transition: width var(--transition-slow);
+    }
+
+    /* Screen Card Common */
+    .screen-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--spacing-lg);
+      animation: fadeIn var(--transition-normal);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .screen-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: var(--spacing-md);
+      border-left: 4px solid var(--accent-teal);
+      padding-left: var(--spacing-sm);
+      line-height: 1.15;
+    }
+
+    /* Screen-specific Content Elements */
+    p.intro-text {
+      font-size: 1.05rem;
+      color: var(--text-main);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .callout {
+      background-color: var(--accent-light);
+      border-left: 4px solid var(--accent-teal);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .alert-callout {
+      background-color: #fff1f2;
+      border-left: 4px solid var(--error-color);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+    }
+
+    .alert-callout-title {
+      font-weight: 700;
+      color: #9f1239;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Mini Course Map */
+    .course-map {
+      background: var(--primary-light);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .map-header {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+    }
+
+    @media (min-width: 600px) {
+      .map-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .map-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-sm);
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .map-item.active {
+      background: var(--accent-light);
+      border-color: var(--accent-border);
+      color: var(--accent-hover);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .map-item.core {
+      background: var(--primary-slate);
+      color: white;
+      border-color: var(--primary-slate);
+      grid-column: 1 / -1;
+    }
+
+    .map-desc-footer {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: var(--spacing-sm);
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Layered Visual Diagram */
+    .diagram-container {
+      background: var(--primary-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .diagram-layer {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .diagram-layer.active-layer {
+      border: 2px solid var(--accent-teal);
+      background-color: #f0fdfa;
+    }
+
+    .diagram-layer-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .diagram-layer-desc {
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    .diagram-arrow {
+      color: var(--accent-teal);
+      font-size: 1.25rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    /* Comparison Section */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+
+    @media (min-width: 650px) {
+      .comparison-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .comp-card {
+      background: var(--primary-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .comp-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .comp-badge.assistant { background: var(--accent-light); color: var(--accent-hover); }
+    .comp-badge.search { background: #e2e8f0; color: #475569; }
+    .comp-badge.static { background: #fed7aa; color: #ea580c; }
+
+    .comp-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 1rem;
+    }
+
+    .comp-text {
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    /* Interactive Options and Radio groups */
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin: var(--spacing-md) 0;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      background-color: var(--primary-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color var(--transition-normal), border-color var(--transition-normal);
+    }
+
+    .option-label:hover {
+      background-color: #cbd5e133;
+    }
+
+    .option-label input[type="radio"],
+    .option-label input[type="checkbox"] {
+      margin-top: 4px;
+      transform: scale(1.1);
+      accent-color: var(--accent-teal);
+    }
+
+    .option-label.selected {
+      background-color: #f0fdfa;
+      border-color: var(--accent-teal);
+    }
+
+    /* Activity Choice Cards */
+    .activity-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+
+    @media (min-width: 650px) {
+      .activity-selector-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .activity-select-card {
+      background-color: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+      position: relative;
+    }
+
+    .activity-select-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .activity-select-card.selected {
+      border-color: var(--accent-teal);
+      background-color: #f0fdfa;
+    }
+
+    .activity-select-card.selected::after {
+      content: '✓ Selected';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent-teal);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .activity-meta {
+      display: flex;
+      gap: 8px;
+    }
+
+    .activity-chip {
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .activity-chip.accent {
+      background: var(--accent-light);
+      color: var(--accent-hover);
+    }
+
+    .activity-card-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+    }
+
+    .activity-bullets {
+      list-style-type: none;
+      padding-left: 0;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .activity-bullets li::before {
+      content: "• ";
+      color: var(--accent-teal);
+      font-weight: bold;
+    }
+
+    /* Interactive Simulation Layout (Activity A & B) */
+    .sim-panel-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+
+    @media (min-width: 700px) {
+      .sim-panel-container {
+        grid-template-columns: 10fr 10fr;
+      }
+      .panel-full {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .sim-card {
+      background-color: var(--primary-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .sim-card-header {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: var(--spacing-sm);
+    }
+
+    .sim-snippet {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-sm);
+      font-size: 0.85rem;
+    }
+
+    .sim-snippet-title {
+      font-weight: 700;
+      color: var(--primary-slate);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .assist-bubble {
+      background-color: var(--card-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .assist-bubble::before {
+      content: "Assistant ✦";
+      display: block;
+      font-weight: 700;
+      color: var(--accent-teal);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* Prompt Box Styled */
+    .prompt-box {
+      font-family: var(--font-mono);
+      background-color: #1e293b;
+      color: #cbd5e1;
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--accent-teal);
+      font-size: 0.85rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .prompt-box-label {
+      font-family: var(--font-family);
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* Question Inputs Panel style clickers */
+    .question-triggers {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .question-btn {
+      text-align: left;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition-normal);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .question-btn:hover {
+      background: var(--accent-light);
+      border-color: var(--accent-teal);
+    }
+
+    .question-btn.clicked {
+      border-color: var(--accent-teal);
+      background-color: #f0fdfa;
+    }
+
+    .question-btn.clicked::after {
+      content: '✓ Executed';
+      font-size: 0.7rem;
+      color: var(--accent-teal);
+      font-weight: 700;
+      background-color: var(--accent-light);
+      padding: 1px 6px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    /* Input text areas */
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      letter-spacing: -0.01em;
+      font-size: 0.95rem;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color var(--transition-normal);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+    }
+
+    textarea::placeholder {
+      color: var(--text-light);
+    }
+
+    /* Navigation Controls Area */
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-xl);
+      gap: var(--spacing-md);
+    }
+
+    /* Interactive Inputs & Button Components */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-normal), transform var(--transition-normal);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-teal);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 3px solid var(--primary-slate);
+      outline-offset: 2px;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #475569;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .btn-secondary:focus-visible {
+      outline: 3px solid var(--accent-teal);
+      outline-offset: 2px;
+    }
+
+    .btn:disabled {
+      background-color: var(--border-color);
+      color: var(--text-light);
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Inline Validation Messages */
+    .feedback-message {
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      margin-top: var(--spacing-md);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .feedback-message.error {
+      background-color: var(--error-light);
+      color: var(--error-color);
+      border: 1px solid #fda4af;
+    }
+
+    .feedback-message.success {
+      background-color: var(--success-light);
+      color: var(--success-color);
+      border: 1px solid #86efac;
+    }
+
+    /* Multi-select check alignment */
+    .multi-select-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+      margin: var(--spacing-md) 0;
+    }
+
+    /* Result Panel Assessment Styles */
+    .assessment-result {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    .score-banner {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary-slate);
+      text-align: center;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .score-rating {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .item-result-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .item-result-card.correct {
+      border-left: 4px solid var(--success-color);
+    }
+
+    .item-result-card.partially-correct {
+      border-left: 4px solid #eab308; /* Yellow 500 */
+    }
+
+    .item-result-card.incorrect {
+      border-left: 4px solid var(--error-color);
+    }
+
+    .item-result-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .item-result-text {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: var(--spacing-xs);
+    }
+
+    /* Review Activities Header Bar */
+    .review-alert-bar {
+      background: #fef08a; /* Yellow 200 */
+      border: 1px solid #fef08a;
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      color: #854d0e;
+      font-weight: 600;
+      margin-bottom: var(--spacing-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    /* Custom Screen Setup */
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Reader Skip Navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Section -->
+  <header class="app-header">
+    <div class="container">
+      <h1>What Are AI Assistants & Knowledge Systems?</h1>
+      <p>AIEI Intermediate Applications &bull; Academic Year 2026</p>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="app-main" id="main-content" tabindex="-1">
+    
+    <!-- Progress Indicator Tracker -->
+    <div class="progress-container" id="progress-container">
+      <div class="progress-meta">
+        <span id="progress-step-text">Screen 1 of 8</span>
+        <span id="progress-percent-text">12% Completed</span>
+      </div>
+      <div class="progress-bar-bg" role="progressbar" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100" id="progress-aria-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill" style="width: 12.5%;"></div>
+      </div>
+    </div>
+
+    <!-- Review Alert Marker (only visible when reviewing alternative path) -->
+    <div class="review-alert-bar" id="review-alert-bar" hidden>
+      <span>Review Mode: You are exploring the alternative activity you skipped in your initial path.</span>
+      <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.8rem;" onclick="returnToMenu()">Return to Selection</button>
+    </div>
+
+    <!-- Core App Pages -->
+    <div id="exercise-panels">
+
+      <!-- Screen 1: Welcome -->
+      <section class="screen-card" id="screen-1">
+        <h2 class="screen-title">Welcome & Course Context</h2>
+        <div class="content">
+          <p class="intro-text">
+            Welcome to this interactive microlearning lesson. Together we will explore how conversational AI assistants bridge the gap between static collections of information and human-centered, strategic productivity.
+          </p>
+          <p>
+            As part of our community college <strong>AIEI intermediate Applications</strong> coursework, this module focuses on deploying AI effectively, maintaining execution reliability, preventing hallucinations, managing critical privacy risks, and building ethical, accountable workflows.
+          </p>
+
+          <div class="course-map">
+            <div class="map-header">Course Core Structure</div>
+            <div class="map-grid">
+              <div class="map-item core">Applications Framework</div>
+              <div class="map-item active">AI Assistants & Systems</div>
+              <div class="map-item">Custom GPTs</div>
+              <div class="map-item">Claude Projects</div>
+              <div class="map-item">RAG Fundamentals</div>
+              <div class="map-item">Training & Guardrails</div>
+            </div>
+            <p class="map-desc-footer">Governance rules, ethical standards, and human-in-the-loop validation are embedded across every strand.</p>
+          </div>
+
+          <div class="callout">
+            <div class="callout-title">Strategic Core Focus</div>
+            <p style="font-size: 0.9rem;">
+              We emphasize <strong>process efficiency</strong> alongside <strong>AI safety</strong>. This is not about learning how to copy-paste generated phrases; it's about engineering context boundaries that ensure accuracy and transparency.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: What is an AI assistant? -->
+      <section class="screen-card" id="screen-2" hidden>
+        <h2 class="screen-title">What is an AI Assistant?</h2>
+        <div class="content">
+          <p class="intro-text">
+            An <strong>AI Assistant</strong> is a software tool driven by a Large Language Model (LLM) configured to mimic dialog flow, maintain multi-turn context, and fulfill custom instructions.
+          </p>
+          
+          <p>Unlike basic web apps, AI Assistants reason over parameters of conversation to craft contextual assistance in real-time.</p>
+
+          <div class="comparison-grid">
+            <div class="comp-card">
+              <span class="comp-badge assistant">AI Assistant</span>
+              <div class="comp-title">Conversational Context</div>
+              <p class="comp-text">Processes requests dynamically. Tailors logic and structure specifically to user requests. Retains conversational memory across multiple turns.</p>
+            </div>
+            <div class="comp-card">
+              <span class="comp-badge search">Search Engine</span>
+              <div class="comp-title">Indexed Retrieval</div>
+              <p class="comp-text">Scans web indexes for keywords. Points to external URL locations. Lacks processing brain, generation capabilities, or prompt compliance.</p>
+            </div>
+            <div class="comp-card">
+              <span class="comp-badge static">Knowledge Base</span>
+              <div class="comp-title">Unstructured Memory</div>
+              <p class="comp-text">Static resources (like file storage system, policy PDF, standard FAQs manual). Lacks interaction, natural language explanation, or query adaptiveness.</p>
+            </div>
+          </div>
+
+          <!-- Knowledge Check -->
+          <div style="margin-top: var(--spacing-xl); border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg);">
+            <p style="font-weight: 700; color: var(--text-dark); margin-bottom: var(--spacing-sm);">Knowledge Check: Quick Diagnostic</p>
+            <p style="font-size: 0.95rem; margin-bottom: var(--spacing-md);">How does an AI assistant principally differ from a classic search engine?</p>
+            
+            <div class="option-group" id="s2-options" role="radiogroup" aria-label="S2 Knowledge Check Options">
+              <label class="option-label" id="s2-opt-a-label">
+                <input type="radio" name="s2-check" value="a" id="s2-opt-a" onclick="selectRadioOption('s2', 'a')" />
+                <span>A) An AI assistant has an index of billions of pages and directs users to exact URLs for every query.</span>
+              </label>
+              <label class="option-label" id="s2-opt-b-label">
+                <input type="radio" name="s2-check" value="b" id="s2-opt-b" onclick="selectRadioOption('s2', 'b')" />
+                <span>B) An AI assistant processes user messages conversationally, retains session context, and synthesizes direct responses based on available language comprehension or loaded sources.</span>
+              </label>
+              <label class="option-label" id="s2-opt-c-label">
+                <input type="radio" name="s2-check" value="c" id="s2-opt-c" onclick="selectRadioOption('s2', 'c')" />
+                <span>C) Search engines are capable of running complex code and creating documents, while AI assistants can only output web links.</span>
+              </label>
+            </div>
+
+            <div id="s2-feedback" class="feedback-message" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: What is a knowledge system? -->
+      <section class="screen-card" id="screen-3" hidden>
+        <h2 class="screen-title">What is a Knowledge System?</h2>
+        <div class="content">
+          <p class="intro-text">
+            A <strong>Knowledge System</strong> is a structured repository of verified documents, datasets, or reference instructions that acts as the "trusted brain source" for an AI. 
+          </p>
+          <p>
+            While the assistant provides the <em>intellectual engine</em> (the ability to read, reason, and draft language), the knowledge system represents the <em>source facts</em>.
+          </p>
+
+          <div class="callout">
+            <div class="callout-title">Source Dependency Law</div>
+            <p style="font-size: 0.9rem;">
+              An assistant's reliability depends entirely on the <strong>quality, boundary clarity, and accuracy</strong> of the source materials within the knowledge system. High-quality inputs yield trustworthy outputs.
+            </p>
+          </div>
+
+          <p style="font-weight: 700; color: var(--text-dark); margin-top: var(--spacing-lg);">Strategic Classroom Architecture</p>
+          
+          <div class="diagram-container">
+            <div class="diagram-layer">
+              <div class="diagram-layer-title">Layer 1: User Navigation</div>
+              <div class="diagram-layer-desc">The user submits a specific, context-bound query (e.g., student support request).</div>
+            </div>
+            <div class="diagram-arrow">↓</div>
+            <div class="diagram-layer">
+              <div class="diagram-layer-title">Layer 2: Parsing & Retrieval</div>
+              <div class="diagram-layer-desc">The query is mapped against coordinates to lookup verified support documents in real-time.</div>
+            </div>
+            <div class="diagram-arrow">↓</div>
+            <div class="diagram-layer active-layer">
+              <div class="diagram-layer-title">Layer 3: Target Knowledge Base (Fact Storage)</div>
+              <div class="diagram-layer-desc">College policy docs, Advising worksheets, Technical checklists, Campus schedules, and LMS DB records.</div>
+            </div>
+            <div class="diagram-arrow">↓</div>
+            <div class="diagram-layer">
+              <div class="diagram-layer-title">Layer 4: Conversational Synthesis</div>
+              <div class="diagram-layer-desc">The Reasoning AI Assistant parses retrieved text to draft a custom, ethical reply.</div>
+            </div>
+          </div>
+
+          <p style="font-size: 0.9rem; color: var(--text-light); text-align: center; margin-top: var(--spacing-sm);">
+            *This setup isolates data retrieval from global pre-training schemas, securing sensitive records.*
+          </p>
+        </div>
+      </section>
+
+      <!-- Screen 4: How they work together -->
+      <section class="screen-card" id="screen-4" hidden>
+        <h2 class="screen-title">How They Work Together</h2>
+        <div class="content">
+          <p class="intro-text">
+            Connecting conversational AI intelligence to targeted, trusted databases transforms general chatbots into robust, reliable, enterprise-grade tools.
+          </p>
+
+          <p style="margin-bottom: var(--spacing-md);">
+            To implement this at school or work, we leverage several frameworks:
+          </p>
+
+          <div class="option-group" style="margin-bottom: var(--spacing-lg);">
+            <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <strong>Custom GPTs:</strong> Dedicated ChatGPT profiles bundled with tailored guidelines, custom actions, and specific documentation uploads for focused team requirements.
+            </div>
+            <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <strong>Claude Projects:</strong> Isolated workspaces in Claude enclosing reference documents, parameters, and baseline contexts ensuring content generation maintains consistent guardrails.
+            </div>
+            <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <strong>RAG Fundamentals (Retrieval-Augmented Generation):</strong> Pulling factual details dynamically from trusted indices matching search terms, appending matches inside the user request prompt, then using that compiled message block as the safe source of truth.
+            </div>
+            <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <strong>Training:</strong> Adjusting foundational network weights by showing millions of examples to teach language patterns, safety policies, or procedural mechanics.
+            </div>
+            <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <strong>Guardrails:</strong> Programmatic boundary scripts supervising input/output directions to arrest incorrect leaks, block sensitive terms, and filter harmful model decisions.
+            </div>
+          </div>
+
+          <p style="font-size: 0.9rem; text-align: center; font-style: italic; color: var(--text-light); margin-bottom: var(--spacing-lg);">
+            Note: This introduces these terms conceptually to prioritize student assessment of safety and effectiveness, rather than deep programming implementations.
+          </p>
+
+          <!-- Critical Risks Callout -->
+          <div class="alert-callout">
+            <div class="alert-callout-title">⚠️ Core Systemic Risks</div>
+            <p style="font-size: 0.92rem; margin-top: var(--spacing-xs);">
+              Using AI applications introduces strategic vulnerabilities:
+            </p>
+            <ul style="font-size: 0.88rem; padding-left: 20px; margin-top: 8px;">
+              <li><strong>Hallucinations:</strong> The tendency of LLMs to state false claims, fabricated schedules, or erroneous rules with high conviction.</li>
+              <li><strong>Privacy & Security Breaches:</strong> Feeding proprietary administrative records, grades, or intellectual property into public web crawlers.</li>
+              <li><strong>Systemic Bias:</strong> Automating recommendations based on biased database criteria, training data distributions, or historical inequalities.</li>
+              <li><strong>Overreliance Error:</strong> Humans blindly accepting generated instructions as perfect truth without validating original sources.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Choose an activity -->
+      <section class="screen-card" id="screen-5" hidden>
+        <h2 class="screen-title">Choose Your Learning Path</h2>
+        <div class="content">
+          <p class="intro-text">
+            Now, let's put these concepts into real-world practice. Select one of the interactive activities below to test your strategic analysis skills.
+          </p>
+          <p style="font-size: 0.95rem; color: var(--text-light);">
+            *Tip: Once you finish your chosen activity path and complete the lesson, you can return here to explore the alternative path.*
+          </p>
+
+          <div class="activity-selector-grid">
+            <!-- Card A -->
+            <div class="activity-select-card" id="activity-card-A" onclick="selectActivityPath('A')">
+              <div class="activity-meta">
+                <span class="activity-chip accent">Activity A</span>
+                <span class="activity-chip">5-7 Min</span>
+              </div>
+              <div class="activity-card-title">From Search to Assistant</div>
+              <p style="font-size: 0.86rem; color: var(--text-main);">
+                Evaluate static database search results side-by-side with conversational AI context grounding.
+              </p>
+              <ul class="activity-bullets">
+                <li>Read a student advisor support crisis scenario</li>
+                <li>Compare raw search logs and a verified information packet</li>
+                <li>Write a brief mapping response gaps and residual risks</li>
+              </ul>
+            </div>
+
+            <!-- Card B -->
+            <div class="activity-select-card" id="activity-card-B" onclick="selectActivityPath('B')">
+              <div class="activity-meta">
+                <span class="activity-chip accent">Activity B</span>
+                <span class="activity-chip">5-7 Min</span>
+              </div>
+              <div class="activity-card-title">Prompting a Tiny Knowledge Base</div>
+              <p style="font-size: 0.86rem; color: var(--text-main);">
+                Deploy a system prompt with explicit boundaries and test interactions against structured queries.
+              </p>
+              <ul class="activity-bullets">
+                <li>Interact with custom instructions for community colleges</li>
+                <li>Execute out-of-scope and complex questions</li>
+                <li>Formulate specific system-instruction improvements</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6A: Activity A -->
+      <section class="screen-card" id="screen-6A" hidden>
+        <h2 class="screen-title">Activity A: From Search to Assistant</h2>
+        <div class="content">
+          <p class="intro-text" style="font-weight: 500;">
+            Scenario Context: Fictional Community College Help Desk
+          </p>
+          <p style="margin-bottom: var(--spacing-md); font-size: 0.95rem;">
+            A student named <strong>Alex</strong> is incredibly anxious about their math midterm, received an automated password reset warning, and feels overwhelmed balancing work and classes. To aid Alex, we can use a traditional search engine or an AI Assistant grounded in verified campus knowledge.
+          </p>
+
+          <!-- Panels Grid -->
+          <div class="sim-panel-container">
+            <!-- Panels left: Search Logs -->
+            <div class="sim-card">
+              <div class="sim-card-header">Mock Search Engine Logs (Alex's keywords)</div>
+              
+              <div class="sim-snippet">
+                <div class="sim-snippet-title">Search: "math help" &rarr; Out of date result</div>
+                <div style="font-size: 0.8rem; color: var(--text-main);">
+                  Learning Commons info page: "Math tutors available in direct library corridor. Note: Postings may change during midterms..."
+                </div>
+              </div>
+
+              <div class="sim-snippet">
+                <div class="sim-snippet-title">Search: "password warning" &rarr; Server error link</div>
+                <div style="font-size: 0.8rem; color: var(--text-main);">
+                  IT Security page: "All system accounts expire password triggers. Link: 404 Page Not Found. Contact system admin..."
+                </div>
+              </div>
+
+              <div class="sim-snippet">
+                <div class="sim-snippet-title">Search: "feeling overwhelmed" &rarr; Generic policy</div>
+                <div style="font-size: 0.8rem; color: var(--text-main);">
+                  Crisis support DB: "Active staff directory lists counseling details. Appointments required 2 weeks in advance."
+                </div>
+              </div>
+            </div>
+
+            <!-- Panels Right: Verified Knowledge Packet -->
+            <div class="sim-card">
+              <div class="sim-card-header">Target Knowledge Packet (Trusted Memory Source)</div>
+              <p style="font-size: 0.85rem; font-style: italic; color: #0f766e; background: #ccfbf1; padding: var(--spacing-sm); border-radius: var(--radius-sm);">
+                The system relies on this verified set of guidelines:
+              </p>
+              
+              <!-- EXACT SOURCE PHRASES -->
+              <div style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
+                <p><strong>Clause 1:</strong> The Learning Commons offers tutoring in writing, math, and study skills Monday through Thursday from 9 AM to 6 PM.</p>
+                <p><strong>Clause 2:</strong> Academic advising helps students choose courses, understand degree pathways, and connect to transfer planning.</p>
+                <p><strong>Clause 3:</strong> The technology help desk assists with passwords, LMS access, and student email.</p>
+                <p><strong>Clause 4:</strong> The college does not provide mental health counseling through the Learning Commons; students should contact Student Wellness for that support.</p>
+              </div>
+            </div>
+
+            <!-- Full width bottom panel: Grounded Assistant Reply -->
+            <div class="sim-card panel-full" style="background-color: #f0fdfa; border-color: var(--accent-border);">
+              <div class="sim-card-header" style="color: var(--accent-hover); border-color: var(--accent-border);">Simulated Assistant Response (Grounded in context)</div>
+              
+              <div class="assist-bubble">
+                <p style="margin-bottom: 8px;">Hello Alex, I want to help guide you to the right support resources on campus so we can address your concerns step-by-step:</p>
+                <ul style="padding-left: 20px; font-size: 0.88rem; display: flex; flex-direction: column; gap: 6px;">
+                  <li><strong>Math Tutoring & Study Support:</strong> You can access free tutoring directly in the Learning Commons. They are open Monday through Thursday from 9 AM to 6 PM.</li>
+                  <li><strong>Password warning:</strong> Contact the Technology Help Desk for passwords, student email, or LMS access support.</li>
+                  <li><strong>Feeling Overwhelmed:</strong> Although the Learning Commons is a study center, note that we do not provide mental health counseling through the Commons. Please contact our <strong>Student Wellness</strong> team directly, who provide specialized wellness and mental health counseling support.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reflection Textarea -->
+          <div style="margin-top: var(--spacing-lg);">
+            <label for="activityA-reflection" style="display: block; font-weight: 700; color: var(--text-dark); margin-bottom: var(--spacing-sm);">
+              Reflection Question:
+              <span style="font-weight: 500; display: block; font-size: 0.9rem; color: var(--text-main); margin-top: 4px;">
+                Referring specifically to the material above, what did the assistant do better than search? What threat/risk still remains if Alex relies too heavily on the AI summary?
+              </span>
+            </label>
+            <textarea id="activityA-reflection" oninput="validateActivityAForm()" placeholder="Type your strategic analysis here... (minimum 20 characters)"></textarea>
+            
+            <button class="btn btn-primary" id="btn-submit-activityA" style="margin-top: var(--spacing-md);" onclick="submitActivityAReflection()" disabled>
+              Submit Reflection & Lock Completion
+            </button>
+            <div id="activityA-sub-feedback" class="feedback-message" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6B: Activity B -->
+      <section class="screen-card" id="screen-6B" hidden>
+        <h2 class="screen-title">Activity B: Prompting a Tiny Knowledge Base</h2>
+        <div class="content">
+          <p class="intro-text">
+            Test a live interactive simulation of model routing, evaluation controls, systems prompting, and output boundaries.
+          </p>
+
+          <!-- Prompt Box Instructions exactly -->
+          <div class="prompt-box">
+            <div class="prompt-box-label">Active System Instructions Prompt</div>
+            &ldquo;You are a helpful AI assistant for first-semester community college students. You only answer questions related to study strategies, campus resources, and time management. If a question is outside that scope, say you cannot answer it and suggest an appropriate campus or professional resource instead.&rdquo;
+          </div>
+
+          <p style="font-size: 0.9rem; margin-bottom: var(--spacing-sm); font-weight: 600;">
+            Task: Click at least TWO of the patient questions below to test how the assistant's boundaries behave:
+          </p>
+
+          <div class="sim-panel-container">
+            <!-- Questions List -->
+            <div class="question-triggers" id="quest-trigger-container">
+              <button class="question-btn" id="qbtn-1" onclick="querySelectedQuestion(1)">
+                <span>Q1: How can I manage my time better if I work 20 hours a week and take four classes?</span>
+                <strong>&rarr;</strong>
+              </button>
+              <button class="question-btn" id="qbtn-2" onclick="querySelectedQuestion(2)">
+                <span>Q2: Which stock should I invest in this month?</span>
+                <strong>&rarr;</strong>
+              </button>
+              <button class="question-btn" id="qbtn-3" onclick="querySelectedQuestion(3)">
+                <span>Q3: I feel overwhelmed and cannot focus. What should I do?</span>
+                <strong>&rarr;</strong>
+              </button>
+            </div>
+
+            <!-- Dynamic Outputs Bubble -->
+            <div class="sim-card" style="background:#ffffff; border:1px solid var(--border-color);">
+              <div class="sim-card-header">System Output response</div>
+              <div id="s6B-dyn-output" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-main); font-style: italic;">
+                -- Waiting for a question trigger to evaluate --
+              </div>
+            </div>
+          </div>
+
+          <!-- Evaluation controls slider check -->
+          <div style="margin-top: var(--spacing-lg); border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg);" id="s6B-eval-controls">
+            <p style="font-weight: 700; color: var(--text-dark); margin-bottom: var(--spacing-sm);">Boundary compliance auditor check:</p>
+            <p style="font-size: 0.88rem; margin-bottom: var(--spacing-md); color: var(--text-light);">
+              As an AI Systems Architect, review the loaded answer: Does the AI safely decline off-topic mental health crisis diagnostic tasks while recommending official student support options?
+            </p>
+
+            <label for="activityB-suggest-text" style="display: block; font-weight: 700; color: var(--text-dark); margin-bottom: var(--spacing-sm);">
+              Guardrail Feedback & Prompt Refinement Suggestion:
+              <span style="font-weight: 500; display: block; font-size: 0.88rem; color: var(--text-main); margin-top: 4px;">
+                How would you improve the system instructions above to tighten scope safety (e.g., adding contact numbers or warning signals for psychological crises)?
+              </span>
+            </label>
+            <textarea id="activityB-suggest-text" oninput="validateActivityBForm()" placeholder="Type your prompt improvement suggestion... (minimum 20 characters)"></textarea>
+
+            <div style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--text-light);" id="visited-progress-indicator">
+              Questions executed: 0 of 3 (Minimum 2 required)
+            </div>
+
+            <button class="btn btn-primary" id="btn-submit-activityB" style="margin-top: var(--spacing-md);" onclick="submitActivityBFeedback()" disabled>
+              Submit Optimization Brief & Continue
+            </button>
+            <div id="activityB-sub-feedback" class="feedback-message" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 7: Debrief -->
+      <section class="screen-card" id="screen-7" hidden>
+        <h2 class="screen-title">Unit Debrief & Strategic Recap</h2>
+        <div class="content">
+          <p class="intro-text">
+            Excellent progress! Let's reflect on the structural goals of our intermediate course strand:
+          </p>
+
+          <div class="option-group" style="margin-bottom: var(--spacing-lg);">
+            <div style="background:var(--card-bg); border: 1px solid var(--border-color); padding: var(--spacing-md); border-radius: var(--radius-md);">
+              <strong>1. Context is King:</strong> AI assistants excel compared to search engines because they compile and summarize structural materials.
+            </div>
+            <div style="background:var(--card-bg); border: 1px solid var(--border-color); padding: var(--spacing-md); border-radius: var(--radius-md);">
+              <strong>2. Clean Data Strategy:</strong> Knowledge structures are the grounding anchor to avoid LLM hallucinations and errors.
+            </div>
+            <div style="background:var(--card-bg); border: 1px solid var(--border-color); padding: var(--spacing-md); border-radius: var(--radius-md);">
+              <strong>3. Human-in-the-Loop Governance:</strong> Security, data privacy bounds, bias checks, and cautious interpretation are crucial for ethical rollouts.
+            </div>
+            <div style="background:var(--card-bg); border: 1px solid var(--border-color); padding: var(--spacing-md); border-radius: var(--radius-md);">
+              <strong>4. Active Improvement Refinement:</strong> Continually monitoring prompts, restricting open instructions with strict rules, and filtering inputs.
+            </div>
+          </div>
+
+          <label for="debrief-textarea" style="display: block; font-weight: 700; color: var(--text-dark); margin-bottom: var(--spacing-sm);">
+            Closing Reflection Prompt:
+            <span style="font-weight: 500; display: block; font-size: 0.9rem; color: var(--text-main); margin-top: 4px;">
+              Where in your school, work, or daily life could an AI assistant connected to trusted information save time or improve support?
+            </span>
+          </label>
+          <textarea id="debrief-textarea" oninput="validateDebriefForm()" placeholder="Type your personal application plan... (minimum 20 characters)"></textarea>
+
+          <button class="btn btn-primary" id="btn-submit-debrief" style="margin-top: var(--spacing-md);" onclick="submitDebriefReflection()" disabled>
+            Lock Reflection & Proceed to Assessment
+          </button>
+        </div>
+      </section>
+
+      <!-- Screen 8: Exit assessment -->
+      <section class="screen-card" id="screen-8" hidden>
+        <h2 class="screen-title">Exit Assessment (Governance Certification)</h2>
+        <div class="content">
+          <p class="intro-text">
+            Demonstrate your strategic mastery with this quick, four-question unit credential assessment.
+          </p>
+
+          <!-- Q1 MCQ -->
+          <div style="border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+            <p style="font-weight: 700; color: var(--text-dark);"><span style="color:var(--accent-teal);">Question 1:</span> Definition check</p>
+            <p style="font-size: 0.95rem; margin-top: 4px; margin-bottom: var(--spacing-md);">An AI Assistant is best defined as:</p>
+            
+            <div class="option-group" id="q1-options" role="radiogroup" aria-label="Q1 Answer Options">
+              <label class="option-label" id="q1-a-label">
+                <input type="radio" name="as-q1" value="a" onclick="selectRadioOption('q1', 'a')" />
+                <span>A) A supercharged web search engine that only links to crawled articles based on static keyword matching.</span>
+              </label>
+              <label class="option-label" id="q1-b-label">
+                <input type="radio" name="as-q1" value="b" onclick="selectRadioOption('q1', 'b')" />
+                <span>B) A language-model-based conversational tool that analyzes full-session context to summarize, answer, or assist with student and professional tasks.</span>
+              </label>
+              <label class="option-label" id="q1-c-label">
+                <input type="radio" name="as-q1" value="c" onclick="selectRadioOption('q1', 'c')" />
+                <span>C) An automated database lookup that extracts records based solely on primary lookup keys.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q2 MCQ Scenario -->
+          <div style="border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+            <p style="font-weight: 700; color: var(--text-dark);"><span style="color:var(--accent-teal);">Question 2:</span> Scenario Optimization</p>
+            <p style="font-size: 0.95rem; margin-top: 4px; margin-bottom: var(--spacing-md);">To help community college students navigate handbooks and catalogs without risking inventing policies (hallucinations), the ideal technological approach is to connect:</p>
+            
+            <div class="option-group" id="q2-options" role="radiogroup" aria-label="Q2 Answer Options">
+              <label class="option-label" id="q2-a-label">
+                <input type="radio" name="as-q2" value="a" onclick="selectRadioOption('q2', 'a')" />
+                <span>A) A general public chatbot directly to the web index to scrape random blogs or forum updates.</span>
+              </label>
+              <label class="option-label" id="q2-b-label">
+                <input type="radio" name="as-q2" value="b" onclick="selectRadioOption('q2', 'b')" />
+                <span>B) A conversational AI model to a trusted search space in a retrieval-augmented system containing approved campus manuals.</span>
+              </label>
+              <label class="option-label" id="q2-c-label">
+                <input type="radio" name="as-q2" value="c" onclick="selectRadioOption('q2', 'c')" />
+                <span>C) No interactive interfaces whatsoever, instructing students manually to lookup database records.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q3 Multi-Select -->
+          <div style="border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+            <p style="font-weight: 700; color: var(--text-dark);"><span style="color:var(--accent-teal);">Question 3:</span> Risk & Vulnerability mapping</p>
+            <p style="font-size: 0.95rem; margin-top: 4px; margin-bottom: var(--spacing-md);">Select ALL critical ethical, accuracy, and deployment risks when installing AI knowledge systems: (Select all that apply)</p>
+            
+            <div class="multi-select-grid">
+              <label class="option-label" id="q3-a-label" style="font-weight: 500;">
+                <input type="checkbox" name="as-q3" value="a" onclick="toggleCheckbox('q3-a')" />
+                <span><strong>Hallucinations:</strong> Fabricated rules or invalid contacts stated with high system authority.</span>
+              </label>
+              <label class="option-label" id="q3-b-label" style="font-weight: 500;">
+                <input type="checkbox" name="as-q3" value="b" onclick="toggleCheckbox('q3-b')" />
+                <span><strong>Data Leakage / Security:</strong> Students' private grades and records feeding into open retraining indices.</span>
+              </label>
+              <label class="option-label" id="q3-c-label" style="font-weight: 500;">
+                <input type="checkbox" name="as-q3" value="c" onclick="toggleCheckbox('q3-c')" />
+                <span><strong>Training Bias:</strong> Replicating biased administrative selection parameters across new workflows.</span>
+              </label>
+              <label class="option-label" id="q3-d-label" style="font-weight: 500;">
+                <input type="checkbox" name="as-q3" value="d" onclick="toggleCheckbox('q3-d')" />
+                <span><strong>Latency Lag:</strong> Standard processing wait delays on modern wireless servers.</span>
+              </label>
+              <label class="option-label" id="q3-e-label" style="font-weight: 500;">
+                <input type="checkbox" name="as-q3" value="e" onclick="toggleCheckbox('q3-e')" />
+                <span><strong>Overreliance:</strong> Academic users failing to double-check AI citations against real manuals.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q4 MCQ -->
+          <div>
+            <p style="font-weight: 700; color: var(--text-dark);"><span style="color:var(--accent-teal);">Question 4:</span> Guardrail Engineering & Safety</p>
+            <p style="font-size: 0.95rem; margin-top: 4px; margin-bottom: var(--spacing-md);">Which of the following is the most robust systems engineering guardrail to prevent an AI Assistant from hallucinating college policies (inventing guidelines) on a student services portal?</p>
+            
+            <div class="option-group" id="q4-options" role="radiogroup" aria-label="Q4 Answer Options">
+              <label class="option-label" id="q4-a-label">
+                <input type="radio" name="as-q4" value="a" onclick="selectRadioOption('q4', 'a')" />
+                <span>A) Systematically instructing the model in its baseline prompt to always browse public community hubs and social media forums for relevant advising tips.</span>
+              </label>
+              <label class="option-label" id="q4-b-label">
+                <input type="radio" name="as-q4" value="b" onclick="selectRadioOption('q4', 'b')" />
+                <span>B) Grounding the assistant's responses using Retrieval-Augmented Generation (RAG) restricted to verified campus manuals, combined with setting the model's Temperature/Creativity parameter to 0 for maximum deterministic outputs.</span>
+              </label>
+              <label class="option-label" id="q4-c-label">
+                <input type="radio" name="as-q4" value="c" onclick="selectRadioOption('q4', 'c')" />
+                <span>C) Relying solely on a detailed website disclaimer informing students that any policy and schedule outputs are likely to be inaccurate or fabricated.</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-submit-assessment" style="margin-top: var(--spacing-lg); width: 100%;" onclick="submitAssessment()" disabled>
+            Submit Final Assessment Answers
+          </button>
+
+          <!-- Result banner -->
+          <div id="assessment-result-region" class="assessment-result" hidden>
+            <div class="score-banner" id="score-banner-text">Score: 4/4 (100%)</div>
+            <div class="score-rating" id="score-rating-text">Outstanding Architecture</div>
+            
+            <div style="margin-top: var(--spacing-lg);">
+              <div class="item-result-card" id="q1-feed-card">
+                <div class="item-result-header">
+                  <span>Q1: AI Assistant Definition</span>
+                  <span id="q1-score-badge">1/1</span>
+                </div>
+                <div class="item-result-text" id="q1-feed-text">Correct! An AI assistant dynamically processes human language structures while holding context memory rather than searching simple indexed matching sites.</div>
+              </div>
+
+              <div class="item-result-card" id="q2-feed-card">
+                <div class="item-result-header">
+                  <span>Q2: Catalog Grounding Scenario</span>
+                  <span id="q2-score-badge">1/1</span>
+                </div>
+                <div class="item-result-text" id="q2-feed-text">Correct! Retrieving pages from a verified knowledge catalog first, then loading matching extracts secures contextual accuracy and prevents harmful hallucinations.</div>
+              </div>
+
+              <div class="item-result-card" id="q3-feed-card">
+                <div class="item-result-header">
+                  <span>Q3: Systems Risk Multi-Select</span>
+                  <span id="q3-score-badge">1/1</span>
+                </div>
+                <div class="item-result-text" id="q3-feed-text">Correct! Hallucinations, security leaks, historical bias, and human overreliance represent core system challenges. Server latency is a physical hardware trait, not an ethical governance hazard.</div>
+              </div>
+
+              <div class="item-result-card" id="q4-feed-card">
+                <div class="item-result-header">
+                  <span>Q4: Custom Guardrail Refinement</span>
+                  <span id="q4-score-badge">1/1</span>
+                </div>
+                <div class="item-result-text" id="q4-feed-text">Correct! Implementing validation protocols, auditing inputs, isolating files, or embedding human validation represents robust AI governance.</div>
+              </div>
+            </div>
+
+            <div style="background-color: var(--accent-light); padding: var(--spacing-md); border-radius: var(--radius-md); margin-top: var(--spacing-lg); border: 1px solid var(--accent-border);">
+              <p style="font-weight: 700; color: var(--accent-hover); font-size: 1rem; margin-bottom: 4px;">Success! Microlearning Standard Achieved</p>
+              <p style="font-size: 0.88rem; color: var(--text-main);">
+                You have finished your main learning route and mastered intermediate conceptual elements including Custom GPT setups, Claude workspace boundaries, RAG data architectures, and model guardrails. Excellent structural evaluation!
+              </p>
+            </div>
+
+            <!-- Alternative Pathway Offer -->
+            <div id="alternative-path-panel" style="background-color: #f1f5f9; padding: var(--spacing-md); border-radius: var(--radius-md); margin-top: var(--spacing-lg); text-align: center; border: 1px dashed var(--border-color);">
+              <p style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px;" id="alternative-path-header">Ready to expand your expertise?</p>
+              <p style="font-size: 0.85rem; margin-bottom: 12px; color: var(--text-light);" id="alternative-path-desc">You skipped the other pathway activity initially. Review it now to gain comprehensive practical mastery!</p>
+              <button class="btn btn-secondary" onclick="runAlternativePathReview()">Explore Alternative Pathway Activity</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Navigation Control Footer Buttons -->
+    <nav class="nav-bar" id="app-nav-bar">
+      <button class="btn btn-secondary" id="nav-btn-back" onclick="navigateScreen(-1)" disabled>
+        &larr; Back
+      </button>
+      <button class="btn btn-primary" id="nav-btn-next" onclick="navigateScreen(1)">
+        Next &rarr;
+      </button>
+    </nav>
+
+    <!-- ARIA Live Announcement feedback zone -->
+    <div id="aria-announce" class="sr-only" aria-live="polite"></div>
+
+  </main>
+
+  <!-- Interactive JavaScript State Engine -->
+  <script>
+    // Master System State Model
+    const state = {
+      currentScreen: 1,
+      selectedActivity: null, // "A" or "B"
+      knowledgeCheckAnswer: null,
+      activityACompleted: false,
+      activityBCompleted: false,
+      activityAResponse: '',
+      activityBVisitedQuestions: [], // array to hold clicked questions e.g. [1, 2, 3]
+      activityBImprovement: '',
+      debriefResponse: '',
+      assessmentAnswers: {
+        q1: null,
+        q2: null,
+        q3: {
+          a: false,
+          b: false,
+          c: false,
+          d: false,
+          e: false
+        },
+        q4: null
+      },
+      assessmentSubmitted: false,
+      assessmentScore: 0,
+      reviewMode: false
+    };
+
+    // Total sequence screen maps
+    const SCREEN_COUNT = 8;
+
+    // Simulation Data Config structures
+    const questionDatabaseB = {
+      1: {
+        text: "How can I manage my time better if I work 20 hours a week and take four classes?",
+        reply: "To manage your time with 20 hours of work and 4 classes, I highly recommend creating a structured weekly calendar:\n\n1. Map out fixed work shifts first.\n2. Dedicate at least 2 hours of study time for every hour spent in class.\n3. Leverage the Learning Commons for time-management worksheets or study groups. Consistency makes a major difference!"
+      },
+      2: {
+        text: "Which stock should I invest in this month?",
+        reply: "I cannot provide financial advice or stock recommendations. My role is to assist with study strategies, college resource guidance, and time management. If you are a business or finance student interested in financial planning concepts, you might contact your Academic Advising team to explore relevant campus business courses."
+      },
+      3: {
+        text: "I feel overwhelmed and cannot focus. What should I do?",
+        reply: "I am here to support your study strategies and campus resource questions, but I cannot provide clinical advice or mental health counseling. Because feeling overwhelmed is a serious challenge, I highly recommend reaching out directly to the Student Wellness Center or a licensed professional counselor who can offer specialized, personal support.\n\nFrom an academic perspective, I encourage you to check the Learning Commons for study skills coaching, or Academic Advising to evaluate if your course load can be adjusted to support your well-being."
+      }
+    };
+
+    // DOM Caching elements helper
+    const DOM = {
+      screen: (num) => document.getElementById(`screen-${num}`),
+      btnBack: document.getElementById('nav-btn-back'),
+      btnNext: document.getElementById('nav-btn-next'),
+      progressBarFill: document.getElementById('progress-bar-fill'),
+      progressStepText: document.getElementById('progress-step-text'),
+      progressPercentText: document.getElementById('progress-percent-text'),
+      progressAriaBar: document.getElementById('progress-aria-bar'),
+      announcer: document.getElementById('aria-announce'),
+      
+      // Screen 2
+      s2Feedback: document.getElementById('s2-feedback'),
+      
+      // Choose path Selection Cards
+      cardA: document.getElementById('activity-card-A'),
+      cardB: document.getElementById('activity-card-B'),
+      
+      // Screen 6A elements
+      txtActivityA: document.getElementById('activityA-reflection'),
+      btnSubmitA: document.getElementById('btn-submit-activityA'),
+      subFeedbackA: document.getElementById('activityA-sub-feedback'),
+      
+      // Screen 6B elements
+      dynOutputB: document.getElementById('s6B-dyn-output'),
+      txtActivityB: document.getElementById('activityB-suggest-text'),
+      btnSubmitB: document.getElementById('btn-submit-activityB'),
+      subFeedbackB: document.getElementById('activityB-sub-feedback'),
+      visitedBText: document.getElementById('visited-progress-indicator'),
+      
+      // Screen 7 elements
+      txtDebrief: document.getElementById('debrief-textarea'),
+      btnSubmitDebrief: document.getElementById('btn-submit-debrief'),
+      
+      // Screen 8 Assessment elements
+      btnSubmitAssessment: document.getElementById('btn-submit-assessment'),
+      assessmentResultRegion: document.getElementById('assessment-result-region'),
+      scoreBannerText: document.getElementById('score-banner-text'),
+      scoreRatingText: document.getElementById('score-rating-text'),
+      
+      // Alternative Path button bar
+      reviewAlertBar: document.getElementById('review-alert-bar'),
+      alternativePanel: document.getElementById('alternative-path-panel')
+    };
+
+    // Launch initial Setup
+    document.addEventListener('DOMContentLoaded', () => {
+      announceToLiveRegion("Lesson loaded. What Are AI Assistants and Knowledge Systems.");
+      updateNavigationUI();
+    });
+
+    // Screen navigation controller Routing
+    function navigateScreen(direction) {
+      const current = state.currentScreen;
+      let next = current + direction;
+
+      // Ensure boundary limit
+      if (next < 1 || next > SCREEN_COUNT) return;
+
+      // Stop forward trajectory if valid preconditions are not performed
+      if (direction === 1 && !validateScreenProgress(current)) {
+        return;
+      }
+
+      // Handle custom routing fork based on activity selection of Screen 5
+      if (current === 5 && direction === 1) {
+        next = state.selectedActivity === 'A' ? '6A' : '6B';
+      } else if ((current === '6A' || current === '6B') && direction === -1) {
+        next = 5;
+      } else if (current === '6A' && direction === 1) {
+        next = 7;
+      } else if (current === '6B' && direction === 1) {
+        next = 7;
+      }
+
+      // Record visual route movement
+      hideAllScreens();
+      showScreen(next);
+      
+      if (next === '6A') state.currentScreen = 6;
+      else if (next === '6B') state.currentScreen = 6;
+      else state.currentScreen = next;
+
+      updateNavigationUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Direct return to navigation selection menu
+    function returnToMenu() {
+      state.reviewMode = false;
+      DOM.reviewAlertBar.hidden = true;
+      hideAllScreens();
+      showScreen(5);
+      state.currentScreen = 5;
+      updateNavigationUI();
+    }
+
+    // Hide everything helper
+    function hideAllScreens() {
+      for (let i = 1; i <= SCREEN_COUNT; i++) {
+        const scEl = DOM.screen(i);
+        if (scEl) scEl.hidden = true;
+      }
+      document.getElementById('screen-6A').hidden = true;
+      document.getElementById('screen-6B').hidden = true;
+    }
+
+    // Show specified index card
+    function showScreen(screenId) {
+      if (typeof screenId === 'number') {
+        DOM.screen(screenId).hidden = false;
+        announceToLiveRegion(`Moved to screen ${screenId}`);
+      } else {
+        document.getElementById(`screen-${screenId}`).hidden = false;
+        announceToLiveRegion(`Moved to specific activity panel ${screenId}`);
+      }
+    }
+
+    // Update global progress bar and buttons lock states
+    function updateNavigationUI() {
+      const current = state.currentScreen;
+
+      // Disable/Enable Back Button
+      if (current === 1 || state.reviewMode) {
+        DOM.btnBack.disabled = true;
+      } else {
+        DOM.btnBack.disabled = false;
+      }
+
+      // Check current screens locks to control Next Button
+      const isAllowedNext = validateScreenProgress(current);
+      DOM.btnNext.disabled = !isAllowedNext;
+
+      // Adjust text labeling for Screen 5 selection and last screen submits
+      if (current === 5) {
+        DOM.btnNext.textContent = "Start Selected Activity \u2192";
+      } else if (current === 8) {
+        DOM.btnNext.textContent = "Exit Course";
+        // Hide standard next controls once assessment loads
+        DOM.btnNext.hidden = true;
+      } else {
+        DOM.btnNext.textContent = "Next \u2192";
+        DOM.btnNext.hidden = false;
+      }
+
+      // Calculate progress parameters
+      let completedStepsPercentage = Math.round((current / SCREEN_COUNT) * 100);
+      DOM.progressStepText.textContent = `Screen ${current} of ${SCREEN_COUNT}`;
+      DOM.progressPercentText.textContent = `${completedStepsPercentage}% Completed`;
+      DOM.progressPercentText.setAttribute('aria-valuenow', completedStepsPercentage);
+      DOM.progressBarFill.style.width = `${completedStepsPercentage}%`;
+      DOM.progressAriaBar.setAttribute('aria-valuenow', completedStepsPercentage);
+    }
+
+    // Accessibility Live Regions announcements
+    function announceToLiveRegion(message) {
+      DOM.announcer.textContent = message;
+    }
+
+    // Validations for each individual step before enabling forward progress
+    function validateScreenProgress(screenId) {
+      if (state.reviewMode) {
+        // If reviewing the alternative path, allow user to freely navigate standard options
+        return true;
+      }
+
+      switch (screenId) {
+        case 1:
+          return true;
+        case 2:
+          // Must participate in Screen 2 MCQ Check answer
+          return state.knowledgeCheckAnswer !== null;
+        case 3:
+          return true;
+        case 4:
+          return true;
+        case 5:
+          // Must explicitly pick Activity A or B
+          return state.selectedActivity !== null;
+        case 6:
+          // Screen 6 validation depends on whether user is executing A or B
+          if (state.selectedActivity === 'A') {
+            return state.activityACompleted;
+          } else {
+            return state.activityBCompleted;
+          }
+        case 7:
+          return state.debriefResponse.trim().length >= 20;
+        case 8:
+          return state.assessmentSubmitted;
+        default:
+          return true;
+      }
+    }
+
+    // Screen 2 Radio Choice Toggles
+    function selectRadioOption(section, optionChar) {
+      if (section === 's2') {
+        state.knowledgeCheckAnswer = optionChar;
+        
+        // Style highlights
+        document.getElementById('s2-opt-a-label').classList.remove('selected');
+        document.getElementById('s2-opt-b-label').classList.remove('selected');
+        document.getElementById('s2-opt-c-label').classList.remove('selected');
+        document.getElementById(`s2-opt-${optionChar}-label`).classList.add('selected');
+
+        // Reveal feedbacks
+        const fd = DOM.s2Feedback;
+        fd.hidden = false;
+        
+        if (optionChar === 'b') {
+          fd.className = "feedback-message success";
+          fd.textContent = "✓ Outstanding! Answer (B) is fully correct. AI Assistants utilize dynamic multi-turn contextual buffers to produce curated natural explanations rather than mapping static database URLs.";
+          announceToLiveRegion("Screen 2 quiz Correct.");
+        } else if (optionChar === 'a') {
+          fd.className = "feedback-message error";
+          fd.textContent = "✗ Incorrect. Simple URL lookups are standard search tactics. Overreliance on open sites lacks specialized institutional rules processing.";
+          announceToLiveRegion("Screen 2 quiz Incorrect.");
+        } else {
+          fd.className = "feedback-message error";
+          fd.textContent = "✗ Incorrect. Classic engines search static indexes. Custom models manipulate code, files, or prompts based on user parameters.";
+          announceToLiveRegion("Screen 2 quiz Incorrect.");
+        }
+      } else if (section === 'q1' || section === 'q2' || section === 'q4') {
+        state.assessmentAnswers[section] = optionChar;
+        
+        document.getElementById(`${section}-a-label`).classList.remove('selected');
+        document.getElementById(`${section}-b-label`).classList.remove('selected');
+        document.getElementById(`${section}-c-label`).classList.remove('selected');
+        document.getElementById(`${section}-${optionChar}-label`).classList.add('selected');
+
+        validateAssessmentForm();
+      }
+
+      updateNavigationUI();
+    }
+
+    // Selection Activity Pathway Toggles
+    function selectActivityPath(pathChar) {
+      if (state.reviewMode) return; // ignore during direct reviews
+
+      state.selectedActivity = pathChar;
+      
+      // Update styling tags
+      if (pathChar === 'A') {
+        DOM.cardA.classList.add('selected');
+        DOM.cardB.classList.remove('selected');
+        announceToLiveRegion("Activity A selected. Dynamic text lookup analysis.");
+      } else {
+        DOM.cardA.classList.remove('selected');
+        DOM.cardB.classList.add('selected');
+        announceToLiveRegion("Activity B selected. Prompt bounds assessment.");
+      }
+      
+      updateNavigationUI();
+    }
+
+    // SCREEN 6A CONTROLS (Activity A)
+    function validateActivityAForm() {
+      const txtValue = DOM.txtActivityA.value;
+      const isValid = txtValue.trim().length >= 20;
+      DOM.btnSubmitA.disabled = !isValid;
+    }
+
+    function submitActivityAReflection() {
+      state.activityAResponse = DOM.txtActivityA.value;
+      state.activityACompleted = true;
+      
+      DOM.subFeedbackA.hidden = false;
+      DOM.subFeedbackA.className = "feedback-message success";
+      DOM.subFeedbackA.textContent = "✓ Analysis analysis logged and saved! Your response maps key advantages (centralizing multiple scattered database items) against major human-in-the-loop validation risks. Proceed to the next screen.";
+      announceToLiveRegion("Activity A finished successfully.");
+
+      if (state.reviewMode) {
+        state.activityACompleted = true;
+      }
+
+      updateNavigationUI();
+    }
+
+    // SCREEN 6B CONTROLS (Activity B)
+    function querySelectedQuestion(qid) {
+      // Dynamic simulated replies
+      const record = questionDatabaseB[qid];
+      DOM.dynOutputB.innerHTML = `<strong>User request:</strong> &ldquo;${record.text}&rdquo;<br><br><strong>Assistant response:</strong><br>${record.reply.replace(/\n\n/g, '<br><br>')}`;
+      DOM.dynOutputB.style.fontStyle = 'normal';
+
+      // Update interactive tracking lists
+      if (!state.activityBVisitedQuestions.includes(qid)) {
+        state.activityBVisitedQuestions.push(qid);
+      }
+      
+      // Toggle class clicked
+      document.getElementById(`qbtn-${qid}`).classList.add('clicked');
+
+      // Update indicator Text label
+      const visitedCount = state.activityBVisitedQuestions.length;
+      DOM.visitedBText.textContent = `Questions executed: ${visitedCount} of 3 (Minimum 2 required)`;
+      
+      announceToLiveRegion(`Executed simulated text scenario ${qid}`);
+      validateActivityBForm();
+    }
+
+    function validateActivityBForm() {
+      const visitedNum = state.activityBVisitedQuestions.length;
+      const textVal = DOM.txtActivityB.value;
+      const isTextValid = textVal.trim().length >= 20;
+
+      const isValid = (visitedNum >= 2) && isTextValid;
+      DOM.btnSubmitB.disabled = !isValid;
+    }
+
+    function submitActivityBFeedback() {
+      state.activityBImprovement = DOM.txtActivityB.value;
+      state.activityBCompleted = true;
+
+      DOM.subFeedbackB.hidden = false;
+      DOM.subFeedbackB.className = "feedback-message success";
+      DOM.subFeedbackB.textContent = "✓ Prompt audit logs saved successfully! Your refinement shows dynamic understanding of how modifying initial system boundaries ensures safe routing of high-stress scenarios. Proceed to the next screen.";
+      announceToLiveRegion("Activity B feedback parsed.");
+
+      if (state.reviewMode) {
+        state.activityBCompleted = true;
+      }
+
+      updateNavigationUI();
+    }
+
+    // SCREEN 7 DEBRIEF CONTROLS
+    function validateDebriefForm() {
+      const val = DOM.txtDebrief.value.trim();
+      DOM.btnSubmitDebrief.disabled = val.length < 20;
+    }
+
+    function submitDebriefReflection() {
+      state.debriefResponse = DOM.txtDebrief.value;
+      announceToLiveRegion("Debrief analysis submitted.");
+      navigateScreen(1);
+    }
+
+    // CHECKBOX TOGGLES FOR ASSESSMENTS (Q3 Check group)
+    function toggleCheckbox(checkId) {
+      if (state.assessmentSubmitted) return;
+
+      const chbox = document.querySelector(`#${checkId}-label input`);
+      const valChar = chbox.value;
+      state.assessmentAnswers.q3[valChar] = chbox.checked;
+
+      if (chbox.checked) {
+        document.getElementById(`${checkId}-label`).classList.add('selected');
+      } else {
+        document.getElementById(`${checkId}-label`).classList.remove('selected');
+      }
+
+      validateAssessmentForm();
+    }
+
+    // Core validation check of assessment submit button
+    function validateAssessmentForm() {
+      if (state.assessmentSubmitted) return;
+
+      const q1Done = state.assessmentAnswers.q1 !== null;
+      const q2Done = state.assessmentAnswers.q2 !== null;
+      
+      // Must check at least one box on Q3 to submit
+      const q3Answers = state.assessmentAnswers.q3;
+      const q3Done = q3Answers.a || q3Answers.b || q3Answers.c || q3Answers.d || q3Answers.e;
+
+      const q4Done = state.assessmentAnswers.q4 !== null;
+
+      const formComplete = q1Done && q2Done && q3Done && q4Done;
+      DOM.btnSubmitAssessment.disabled = !formComplete;
+    }
+
+    // SCORE AND FEEDBACK METHOD FOR EXIT PORTAL
+    function submitAssessment() {
+      if (state.assessmentSubmitted) return;
+
+      let score = 0;
+
+      // Q1 Check
+      const q1Card = document.getElementById('q1-feed-card');
+      const q1Badge = document.getElementById('q1-score-badge');
+      const q1Text = document.getElementById('q1-feed-text');
+      if (state.assessmentAnswers.q1 === 'b') {
+        score++;
+        q1Card.className = "item-result-card correct";
+        q1Badge.textContent = "1/1 Correct";
+        q1Text.textContent = "Correct! An AI assistant dynamically processes human context parameters using semantic token weights rather than matching literal index URLs.";
+      } else {
+        q1Card.className = "item-result-card incorrect";
+        q1Badge.textContent = "0/1 Incorrect";
+        q1Text.textContent = "Incorrect. While index systems extract URLs, actual assistants utilize model brains to hold session dialog context.";
+      }
+
+      // Q2 Check
+      const q2Card = document.getElementById('q2-feed-card');
+      const q2Badge = document.getElementById('q2-score-badge');
+      const q2Text = document.getElementById('q2-feed-text');
+      if (state.assessmentAnswers.q2 === 'b') {
+        score++;
+        q2Card.className = "item-result-card correct";
+        q2Badge.textContent = "1/1 Correct";
+        q2Text.textContent = "Correct! Connecting models to verified index repositories represents standard Retrieval-Augmented Generation (RAG) which bounds answers to safe documentation.";
+      } else {
+        q2Card.className = "item-result-card incorrect";
+        q2Badge.textContent = "0/1 Incorrect";
+        q2Text.textContent = "Incorrect. Scraping external links maintains hallucinations risks. Embedding local RAG structures ensures safe outputs.";
+      }
+
+      // Q3 Check: a, b, c, e are correct. d is incorrect.
+      const q3Card = document.getElementById('q3-feed-card');
+      const q3Badge = document.getElementById('q3-score-badge');
+      const q3Text = document.getElementById('q3-feed-text');
+      const q3 = state.assessmentAnswers.q3;
+
+      let q3Correct = q3.a && q3.b && q3.c && q3.e && !q3.d;
+      let q3Partial = (q3.a || q3.b || q3.c || q3.e) && !q3.d;
+
+      if (q3Correct) {
+        score++;
+        q3Card.className = "item-result-card correct";
+        q3Badge.textContent = "1/1 Correct";
+        q3Text.textContent = "Correct! Hallucinations, data security breaches, historic bias replication, and unchecked overreliance are primary design threats. Server latency check is speed, not an ethical risk.";
+      } else if (q3Partial) {
+        score += 0.5;
+        q3Card.className = "item-result-card partially-correct";
+        q3Badge.textContent = "0.5/1 Partially Correct";
+        q3Text.textContent = "Partially Correct. You successfully captured some risks, but the full correct matrix includes Hallucinations, security leaks, training bias, and overreliance. (Note that latency lag is a physical speed challenge).";
+      } else {
+        q3Card.className = "item-result-card incorrect";
+        q3Badge.textContent = "0/1 Incorrect";
+        q3Text.textContent = "Incorrect. You checked server latency, or missed primary ethical dangers. Safe architecture monitors training distribution, leakage, and unverified outputs.";
+      }
+
+      // Q4 Check
+      const q4Card = document.getElementById('q4-feed-card');
+      const q4Badge = document.getElementById('q4-score-badge');
+      const q4Text = document.getElementById('q4-feed-text');
+      if (state.assessmentAnswers.q4 === 'b') {
+        score++;
+        q4Card.className = "item-result-card correct";
+        q4Badge.textContent = "1/1 Correct";
+        q4Text.textContent = "Correct! Grounding the assistant's responses using Retrieval-Augmented Generation (RAG) restricted to verified manuals, in combination with a setting of model Temperature to 0, represents the most robust engineering method to avoid hallucination failures.";
+      } else {
+        q4Card.className = "item-result-card incorrect";
+        q4Badge.textContent = "0/1 Incorrect";
+        q4Text.textContent = "Incorrect. System instruction of searching open blogs amplifies hallucinations, and client-side disclaimers only shift the blame without fixing inaccuracy root causes. Restricting search scopes to verified manuals (RAG) alongside a temperature of 0 ensures safe, deterministic answers.";
+      }
+
+      // Store in State
+      state.assessmentScore = score;
+      state.assessmentSubmitted = true;
+
+      // Update Score Banner
+      DOM.scoreBannerText.textContent = `Score: ${score} / 4 (${Math.round((score/4)*100)}%)`;
+      
+      // Score Evaluation Badge Label
+      let evaluationStr = "Systems Apprentice";
+      if (score === 4) evaluationStr = "Outstanding AI Architect";
+      else if (score >= 3) evaluationStr = "Safe Systems Implementer";
+      else if (score >= 2) evaluationStr = "Governance Auditor";
+      DOM.scoreRatingText.textContent = evaluationStr;
+
+      // Disable inputs inside forms
+      disableAllAssessmentFields();
+
+      // Show Result panels
+      DOM.assessmentResultRegion.hidden = false;
+      announceToLiveRegion(`Assessment scoring output: ${score} out of 4 points. Rating: ${evaluationStr}.`);
+
+      // Determine alternative path offer details
+      evaluateAlternativePathwayOffer();
+
+      updateNavigationUI();
+    }
+
+    // Disable all options upon submission to avoid edits
+    function disableAllAssessmentFields() {
+      DOM.btnSubmitAssessment.disabled = true;
+
+      const inputs = document.querySelectorAll('#screen-8 input');
+      inputs.forEach(i => i.disabled = true);
+    }
+
+    // Determine if user can try alternative path they skipped initially
+    function evaluateAlternativePathwayOffer() {
+      const initialPath = state.selectedActivity;
+      const altPath = initialPath === 'A' ? 'B' : 'A';
+      const altCompleted = altPath === 'A' ? state.activityACompleted : state.activityBCompleted;
+
+      if (!altCompleted) {
+        document.getElementById('alternative-path-header').textContent = `Expand Your Knowledge: Explore Activity ${altPath}!`;
+        document.getElementById('alternative-path-desc').textContent = `In your initial run, you chose Activity ${initialPath}. Hop onto the alternative layout to test both systems!`;
+        DOM.alternativePanel.style.display = 'block';
+      } else {
+        // Both pathways finished, write completed note
+        document.getElementById('alternative-path-header').textContent = "✓ Master Architect Training Complete!";
+        document.getElementById('alternative-path-desc').textContent = "You have fully run both educational activity scenarios (Activity A & Activity B) and finished the credit exit criteria. Strategic credential achieved!";
+        // Hide alternative explorer button
+        DOM.alternativePanel.querySelector('button').style.display = 'none';
+      }
+    }
+
+    // Route user into skipped activity path review
+    function runAlternativePathReview() {
+      const initialPath = state.selectedActivity;
+      const altChar = initialPath === 'A' ? 'B' : 'A';
+
+      // Set state trackers
+      state.selectedActivity = altChar;
+      state.reviewMode = true;
+
+      // Show alert bar alert
+      DOM.reviewAlertBar.hidden = false;
+
+      // Force route to specified activity layout screen
+      hideAllScreens();
+      showScreen(`6${altChar}`);
+      
+      state.currentScreen = 6;
+      updateNavigationUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
