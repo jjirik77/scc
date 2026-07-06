@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection: Where Do You Already See AI Assistants?</title>
+<style>
+  :root {
+    --ink: #1f2a33;
+    --ink-soft: #46555f;
+    --paper: #f5f8f7;
+    --card: #ffffff;
+    --line: #d7e0dd;
+    --accent: #0f6f66;        /* deep teal — 4.5:1+ on white */
+    --accent-soft: #e3f1ee;
+    --accent-strong: #0a5a53;
+    --check: #1a7f37;
+    --check-soft: #e7f4ea;
+    --warn-soft: #fdf3e3;
+    --warn-ink: #7a5310;
+    --focus: #0b4dd1;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { font-size: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", "SF Pro Text", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.0625rem;   /* 17px body */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3.5rem;
+  }
+
+  /* ---------- Header ---------- */
+  header .eyebrow {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    margin-bottom: 0.9rem;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 4.5vw, 2.1rem);
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    font-weight: 750;
+    letter-spacing: -0.015em;
+  }
+
+  .directions p { margin: 0 0 0.85rem; color: var(--ink-soft); }
+  .directions strong { color: var(--ink); }
+
+  .example {
+    border-left: 4px solid var(--accent);
+    background: var(--card);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.9rem 1.1rem;
+    margin: 1.1rem 0 0;
+    font-size: 0.9875rem;
+    color: var(--ink-soft);
+  }
+  .example .example-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ---------- Hint area ---------- */
+  details.hints {
+    margin: 1.4rem 0 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  details.hints summary {
+    cursor: pointer;
+    padding: 0.85rem 1.1rem;
+    font-weight: 650;
+    color: var(--accent-strong);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius);
+  }
+  details.hints summary::-webkit-details-marker { display: none; }
+  details.hints summary::before {
+    content: "";
+    width: 0.55rem; height: 0.55rem;
+    border-right: 2px solid var(--accent-strong);
+    border-bottom: 2px solid var(--accent-strong);
+    transform: rotate(-45deg);
+    transition: transform 0.15s ease;
+    flex: none;
+  }
+  details.hints[open] summary::before { transform: rotate(45deg); }
+  details.hints .hint-body {
+    padding: 0 1.1rem 1rem;
+    color: var(--ink-soft);
+    font-size: 0.9875rem;
+  }
+  details.hints ul { margin: 0.4rem 0 0; padding-left: 1.3rem; }
+  details.hints li { margin-bottom: 0.3rem; }
+
+  /* ---------- Writing card ---------- */
+  .writing-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.25rem 1.5rem;
+    margin-top: 1.6rem;
+    box-shadow: 0 1px 3px rgba(31, 42, 51, 0.06);
+  }
+
+  label[for="response"] {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+    font-size: 1.05rem;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 11rem;
+    resize: vertical;
+    font: inherit;
+    color: var(--ink);
+    background: #fdfefe;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    line-height: 1.6;
+  }
+  textarea::placeholder { color: #7b8a93; }
+  textarea:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+
+  .counter-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.55rem;
+    font-size: 0.925rem;
+    color: var(--ink-soft);
+  }
+  .counter-row .on-target { color: var(--check); font-weight: 650; }
+
+  /* ---------- Checklist ---------- */
+  .checklist {
+    margin-top: 1.4rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 1.2rem;
+  }
+  .checklist h2 {
+    font-size: 1.02rem;
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+  }
+  .checklist ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    font-size: 0.975rem;
+    color: var(--ink-soft);
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+  .check-item .mark {
+    flex: none;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    border: 2px solid #9fb2ad;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: transparent;
+    margin-top: 0.05rem;
+    transition: all 0.25s ease;
+  }
+  .check-item.done {
+    background: var(--check-soft);
+    border-color: #bfe0c6;
+    color: var(--ink);
+  }
+  .check-item.done .mark {
+    background: var(--check);
+    border-color: var(--check);
+    color: #fff;
+  }
+  .check-item .status-text { position: absolute; left: -9999px; }
+
+  /* ---------- Buttons ---------- */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+  }
+  button {
+    font: inherit;
+    font-weight: 650;
+    border-radius: 10px;
+    padding: 0.7rem 1.25rem;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    min-height: 2.9rem;
+  }
+  button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .btn-primary:hover { background: var(--accent-strong); }
+  .btn-secondary {
+    background: #ffffff;
+    color: var(--accent-strong);
+    border-color: var(--accent);
+  }
+  .btn-secondary:hover { background: var(--accent-soft); }
+
+  /* ---------- Feedback ---------- */
+  .feedback {
+    margin-top: 1.1rem;
+    border-radius: 10px;
+    padding: 0.95rem 1.1rem;
+    font-size: 0.99rem;
+    display: none;
+    border: 1px solid transparent;
+  }
+  .feedback.visible { display: block; }
+  .feedback.ready {
+    background: var(--check-soft);
+    border-color: #bfe0c6;
+    color: #14522a;
+  }
+  .feedback.almost {
+    background: var(--accent-soft);
+    border-color: #bcd9d3;
+    color: var(--accent-strong);
+  }
+  .feedback.short {
+    background: var(--warn-soft);
+    border-color: #ecd9ac;
+    color: var(--warn-ink);
+  }
+  .feedback strong { display: block; margin-bottom: 0.2rem; }
+
+  .copy-status {
+    font-size: 0.9rem;
+    color: var(--check);
+    font-weight: 650;
+    margin-top: 0.5rem;
+    min-height: 1.3rem;
+  }
+
+  /* ---------- Reminder ---------- */
+  .reminder {
+    margin-top: 2rem;
+    text-align: center;
+    background: var(--card);
+    border: 1.5px dashed var(--accent);
+    border-radius: var(--radius);
+    padding: 0.95rem 1.1rem;
+    color: var(--accent-strong);
+    font-weight: 650;
+    font-size: 0.99rem;
+  }
+
+  footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #6b7a83;
+  }
+
+  @media (max-width: 520px) {
+    .actions { flex-direction: column; }
+    .actions button { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Reflection Activity</span>
+    <h1>Where do you already see AI&nbsp;assistants?</h1>
+    <div class="directions">
+      <p>Think about your daily life as a student, worker, or consumer. Where do you already see AI assistants or chatbot-like tools? In <strong>3–4 sentences</strong>, name <strong>one example</strong>, <strong>what it does well</strong>, and <strong>one thing you wish it did differently</strong>.</p>
+      <p>Your response is for your own learning; if you'd like to keep it, copy and save it before moving on.</p>
+      <div class="example">
+        <span class="example-label">Example response</span>
+        "A bank's website chat helped me find my routing number at midnight—fast and available when no branch was open. One thing I'd change: it should hand me off to a real person sooner once my question gets complicated."
+      </div>
+    </div>
+
+    <details class="hints">
+      <summary>Need ideas?</summary>
+      <div class="hint-body">
+        <p style="margin:0;">You've probably used more of these than you realize. Consider:</p>
+        <ul>
+          <li><strong>Banking chat</strong> — checking a balance or finding account info on a bank's site or app</li>
+          <li><strong>Shopping support bots</strong> — order tracking, returns, or product questions on retail sites</li>
+          <li><strong>School help tools</strong> — a college website chatbot, LMS assistant, or tutoring helper</li>
+          <li><strong>Customer service chat</strong> — airlines, phone carriers, streaming services, delivery apps</li>
+          <li><strong>Phone assistants</strong> — Siri, Google Assistant, or Alexa setting timers, answering questions, or sending texts</li>
+        </ul>
+      </div>
+    </details>
+  </header>
+
+  <main>
+    <section class="writing-card" aria-labelledby="write-heading">
+      <label for="response" id="write-heading">Your reflection</label>
+      <textarea id="response" placeholder="Type your 3–4 sentence reflection here." aria-describedby="sentence-count checklist-heading"></textarea>
+
+      <div class="counter-row">
+        <span id="sentence-count" aria-live="polite">0 sentences so far</span>
+        <span>Target: 3–4 sentences</span>
+      </div>
+
+      <div class="checklist">
+        <h2 id="checklist-heading">Your progress <span style="font-weight:400; color:var(--ink-soft); font-size:0.88rem;">(a friendly guide, not a grade)</span></h2>
+        <ul id="checklist" aria-live="polite">
+          <li class="check-item" id="chk-example">
+            <span class="mark" aria-hidden="true">✓</span>
+            <span>Names one example of an AI assistant or chatbot-like tool<span class="status-text"> — not detected yet</span></span>
+          </li>
+          <li class="check-item" id="chk-well">
+            <span class="mark" aria-hidden="true">✓</span>
+            <span>Explains what it does well<span class="status-text"> — not detected yet</span></span>
+          </li>
+          <li class="check-item" id="chk-change">
+            <span class="mark" aria-hidden="true">✓</span>
+            <span>Explains one thing you wish it did differently<span class="status-text"> — not detected yet</span></span>
+          </li>
+          <li class="check-item" id="chk-length">
+            <span class="mark" aria-hidden="true">✓</span>
+            <span>Has 3–4 sentences<span class="status-text"> — not detected yet</span></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" id="btn-review">Review my response</button>
+        <button type="button" class="btn-secondary" id="btn-copy">Copy response</button>
+        <button type="button" class="btn-secondary" id="btn-download">Download response (.txt)</button>
+      </div>
+
+      <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    </section>
+
+    <p class="reminder">📌 Copy and save your response before moving on.</p>
+  </main>
+
+  <footer>
+    This activity runs entirely in your browser. Nothing you type is stored or sent anywhere.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var textarea = document.getElementById("response");
+  var sentenceCountEl = document.getElementById("sentence-count");
+  var feedbackEl = document.getElementById("feedback");
+  var copyStatusEl = document.getElementById("copy-status");
+
+  var checks = {
+    example: document.getElementById("chk-example"),
+    well: document.getElementById("chk-well"),
+    change: document.getElementById("chk-change"),
+    length: document.getElementById("chk-length")
+  };
+
+  /* Lenient, supportive keyword patterns — these estimate progress, never grade it. */
+  var patterns = {
+    example: /\b(chat\s?bot|chatbot|bot|assistant|siri|alexa|google assistant|cortana|bixby|chatgpt|gpt|claude|gemini|copilot|smart speaker|virtual (agent|assistant)|help desk|customer (service|support) chat|bank('s)? (chat|app|website)|autocorrect|autocomplete|recommendation|voice assistant|ai (tool|chat|helper|app)|a\.i\.)\b/i,
+    well: /\b(help(s|ed|ful)?|useful|fast|quick(ly)?|eas(y|ier|ily)|convenient|good|great|well|efficient|available|saves?|saved|accurate|reliable|handy|simple|smooth|instant(ly)?|works?( well)?|answer(s|ed)?|found|nice|love[ds]?|like[ds]?)\b/i,
+    change: /\b(wish(es|ed)?|change[ds]?|improve[ds]?|better|should|shouldn'?t|instead|however|but|differently|rather|prefer(red)?|annoy(s|ing|ed)?|frustrat(es|ing|ed)?|problem|issue|slow(er)?|limit(s|ed|ing)?|struggle[ds]?|confus(es|ing|ed)|hand(s)? (me )?off|real person|human|doesn'?t|can'?t|couldn'?t|won'?t|hard(er)? to)\b/i
+  };
+
+  function countSentences(text) {
+    var parts = text.split(/[.!?]+(?=\s|$)/);
+    var count = 0;
+    for (var i = 0; i < parts.length; i++) {
+      if (/[a-z0-9]/i.test(parts[i])) count++;
+    }
+    return count;
+  }
+
+  function setCheck(item, met) {
+    item.classList.toggle("done", met);
+    var status = item.querySelector(".status-text");
+    if (status) status.textContent = met ? " — looking good" : " — not detected yet";
+  }
+
+  function evaluate() {
+    var text = textarea.value;
+    var sentences = countSentences(text);
+
+    var results = {
+      example: patterns.example.test(text),
+      well: patterns.well.test(text),
+      change: patterns.change.test(text),
+      length: sentences >= 3 && sentences <= 4
+    };
+
+    setCheck(checks.example, results.example);
+    setCheck(checks.well, results.well);
+    setCheck(checks.change, results.change);
+    setCheck(checks.length, results.length);
+
+    sentenceCountEl.textContent =
+      sentences === 1 ? "1 sentence so far" : sentences + " sentences so far";
+    sentenceCountEl.classList.toggle("on-target", results.length);
+
+    return { results: results, sentences: sentences };
+  }
+
+  function showFeedback(kind, title, body) {
+    feedbackEl.className = "feedback visible " + kind;
+    feedbackEl.innerHTML = "";
+    var strong = document.createElement("strong");
+    strong.textContent = title;
+    var span = document.createElement("span");
+    span.textContent = body;
+    feedbackEl.appendChild(strong);
+    feedbackEl.appendChild(span);
+  }
+
+  function review() {
+    var state = evaluate();
+    var r = state.results;
+    var met = [r.example, r.well, r.change, r.length].filter(Boolean).length;
+
+    if (state.sentences === 0) {
+      showFeedback("short", "Ready when you are.",
+        "Start with the AI assistant or chatbot you've seen most recently — even a quick customer-service chat counts.");
+      return;
+    }
+
+    if (state.sentences < 3) {
+      showFeedback("short", "Good start — keep going.",
+        "You're a little short right now. Aim for 3–4 sentences: name your example, say what it does well, and add one thing you'd change.");
+      return;
+    }
+
+    if (met === 4) {
+      showFeedback("ready", "Complete and ready! 🎉",
+        "Your reflection names an example, notes a strength, and suggests a change — exactly what this prompt asked for. Remember to copy or download it before moving on.");
+      return;
+    }
+
+    var missing = [];
+    if (!r.example) missing.push("naming the specific tool or assistant");
+    if (!r.well) missing.push("saying what it does well");
+    if (!r.change) missing.push("adding one thing you wish it did differently");
+    if (!r.length) missing.push("trimming or expanding to 3–4 sentences");
+
+    showFeedback("almost", "Almost there — add one more detail.",
+      "You're close! Consider " + missing.join(", and ") + ". This is a reflection, not a test — the checklist is just a guide.");
+  }
+
+  function fallbackCopy(text) {
+    var temp = document.createElement("textarea");
+    temp.value = text;
+    temp.setAttribute("readonly", "");
+    temp.style.position = "absolute";
+    temp.style.left = "-9999px";
+    document.body.appendChild(temp);
+    temp.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(temp);
+    return ok;
+  }
+
+  function copyResponse() {
+    var text = textarea.value.trim();
+    if (!text) {
+      copyStatusEl.textContent = "Type your reflection first, then copy it.";
+      return;
+    }
+    function done(ok) {
+      copyStatusEl.textContent = ok
+        ? "Copied! Paste it somewhere safe — notes, a doc, or an email to yourself."
+        : "Copy didn't work in this browser. Select your text and press Ctrl+C (or Cmd+C).";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); },
+        function () { done(fallbackCopy(text)); });
+    } else {
+      done(fallbackCopy(text));
+    }
+  }
+
+  function downloadResponse() {
+    var text = textarea.value.trim();
+    if (!text) {
+      copyStatusEl.textContent = "Type your reflection first, then download it.";
+      return;
+    }
+    var content = "Reflection: Where do you already see AI assistants?\r\n" +
+                  "Date: " + new Date().toLocaleDateString() + "\r\n\r\n" + text + "\r\n";
+    var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "ai-assistants-reflection.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    copyStatusEl.textContent = "Downloaded! Check your downloads folder for ai-assistants-reflection.txt.";
+  }
+
+  textarea.addEventListener("input", evaluate);
+  document.getElementById("btn-review").addEventListener("click", review);
+  document.getElementById("btn-copy").addEventListener("click", copyResponse);
+  document.getElementById("btn-download").addEventListener("click", downloadResponse);
+
+  evaluate();
+})();
+</script>
+</body>
+</html>
